@@ -8,8 +8,19 @@ import nltk
 
 st.title("SMS Spam Classifier System")
 
+st.markdown(
+    """
+    <style>
+    .css-1lcbz6z {
+        font-size: 24px;  # Change the font size as needed
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-sms = st.text_area("Enter the sms here:-")
+
+sms = st.text_area("Enter the sms here:-",)
 
 
 # if st.button("Recommand the Movies"):
