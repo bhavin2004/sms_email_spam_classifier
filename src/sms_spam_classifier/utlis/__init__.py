@@ -1,3 +1,7 @@
+from nltk.corpus import stopwords
+from string import punctuation
+from nltk.stem.porter import PorterStemmer
+import nltk
 import numpy as np
 import pickle
 import os, sys
@@ -214,3 +218,19 @@ def top_n_models_with_tuning(models, evaluated_models, x_train, y_train, x_test,
             best_model_name = model_name
 
     return best_model_name, best_model, best_score
+
+
+def transform_text(text:str,ps=PorterStemmer()):
+        text = text.lower()
+        text = nltk.word_tokenize(text)
+        res=[]
+        for i in text:
+            if i.isalpha():
+                res.append(i)
+        text = res[:]
+        res.clear()
+        for i in text:
+            if i not in stopwords.words("english") and i not in punctuation:
+                res.append(ps.stem(i))
+        return " ".join(res)
+

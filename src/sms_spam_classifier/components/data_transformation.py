@@ -1,4 +1,4 @@
-from src.sms_spam_classifier.utlis import save_pkl
+from src.sms_spam_classifier.utlis import save_pkl,transform_text
 from sklearn.feature_extraction.text import TfidfVectorizer
 from src.logger import logging
 from src.exception import CustomException
@@ -56,8 +56,8 @@ class DataTransformation():
             test_target = test_df['target']
             print(train_df.shape, test_df.shape, train_target.shape, test_target.shape)
             #Transforming the data
-            train_df['transformed_txt'] = train_df['sms'].apply(self.transform_text)
-            test_df['transformed_txt'] = test_df['sms'].apply(self.transform_text)
+            train_df['transformed_txt'] = train_df['sms'].apply(transform_text)
+            test_df['transformed_txt'] = test_df['sms'].apply(transform_text)
 
             #converting txt in vectors
             tf_vectorizer = TfidfVectorizer(max_features=3000)
@@ -82,7 +82,7 @@ class DataTransformation():
             logging.error(f"Error occurred in data transformation due to {e}")
             raise CustomException(e,sys)
         
-    def transform_text(self,text:str,ps=PorterStemmer()):
+    def transform_text(text:str,ps=PorterStemmer()):
         text = text.lower()
         text = nltk.word_tokenize(text)
         res=[]
