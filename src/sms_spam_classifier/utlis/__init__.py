@@ -12,6 +12,8 @@ from time import time
 from tqdm import tqdm
 from sklearn.model_selection import GridSearchCV
 
+nltk.download('punkt')
+nltk.download('stopwords')
 
 
 def save_pkl(obj, obj_path):

@@ -6,6 +6,7 @@ from src.sms_spam_classifier.utlis import load_pkl,transform_text
 import sys
 import os
 import pandas as pd
+import nltk
 
 @dataclass
 class PredictionPipelineConfig():
