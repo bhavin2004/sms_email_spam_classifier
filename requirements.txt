@@ -1,0 +1,9 @@
+pandas
+numpy
+seaborn
+scikit-learn
+imblearn
+ipykernel
+nltk
+wordcloud
+# -e .
