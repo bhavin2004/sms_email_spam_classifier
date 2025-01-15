@@ -4,18 +4,22 @@ from dataclasses import dataclass
 from pathlib import Path
 import os
 import sys
-from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.feature_extraction.text import CountVectorizer
-# from gensim.models import Word2Vec
-from nltk.stem import PorterStemmer
-from nltk.stem import WordNetLemmatizer
-import nltk
+
 import numpy as np
-from src.utlis import download_nltk_resource,save_pkl
+from src.sms_spam_classifier.utlis import save_pkl
+from src.sms_spam_classifier.utlis import 
+
+##importing all models
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.naive_bayes import MultinomialNB,GaussianNB,BernoulliNB
+from sklearn.tree import DecisionTreeClassifier,ExtraTreeClassifier
+from sklearn.ensemble import RandomForestClassifier,AdaBoostClassifier,ExtraTreesClassifier,GradientBoostingClassifier,HistGradientBoostingClassifier,BaggingClassifier
+from sklearn.neighbors import KNeighborsClassifier
 
 @dataclass
 class ModelTrainerConfig():
-    similarity_path = Path('artifacts/similarity.pkl')
+    model_path = Path('artifacts/model.pkl')
     
 class ModelTrainer():
     
@@ -23,56 +27,42 @@ class ModelTrainer():
         self.config = ModelTrainerConfig()
         os.makedirs(os.path.dirname(self.config.similarity_path),exist_ok=True)
 
-    def initiate_model_trainer(self,df):
+    def initiate_model_trainer(self,x_train,x_test,y_train,y_test):
         try:
-
-            logging.info("Model Trainer Is Initialized")
+            logging.info("Initiating the Model Trainer")
+            models={
+                LogisticRegression(solver='liblinear',penalty='l1'),
+                SVC(kernel='sigmoid',gamma=0.1),
+                MultinomialNB(),
+                BernoulliNB(),
+                GaussianNB(),
+                DecisionTreeClassifier(max_depth=5),
+                ExtraTreeClassifier(max_depth=5),
+                ExtraTreesClassifier(n_estimators=50,random_state=2),
+                RandomForestClassifier(n_estimators=50,random_state=3),
+                AdaBoostClassifier(n_estimators=50,random_state=3),
+                GradientBoostingClassifier(n_estimators=50,random_state=3),
+                HistGradientBoostingClassifier(n_estimators=50,random_state=3),
+                BaggingClassifier(n_estimators=50,random_state=3),
+                KNeighborsClassifier()
+                
+            }
+            logging.info("Starting the model evaluation")           
+            evaluated_models=evaluate_the_models(models,x_train,x_test,y_train,y_test)
+            logging.info("Evaluation of models completed")
+            logging.info(evaluated_models)
+            # logging.info("\n"+"\n".join([str(i) for i in evaluated_models.items()]))
+            logging.info(f"Every model performance=>\n"+"\n".join([str(i) for i in evaluated_models.items()]))
+            logging.info("Finding best model using best model function")
+            best_model_name,best_model_trained,best_score=best_model(models,evaluated_models)
+            print(f'Best Model Name: {best_model_name}')
+            print(f'Best Model Score: {best_score}')
             
-            
-            df.tags=df.tags.apply(self.hybrid_lemmatize_stem)
-            vectors = self.get_vectorized_data(df.tags)
-            
-            #Initializing the object of Cosine_similarity
-            similarity = cosine_similarity(vectors)
-            # self.recommend("Avatar",new_df=df,simalarities=similarity)
-            
-            save_pkl(similarity,self.config.similarity_path)
-            
-            logging.info("Model Trainer Process Is Complete ")
-            # self.recommend('Batman',df,similarity)
-            
+            logging.info(f"Best Model Name: {best_model_name}")
+            logging.info(f"Best Model Score: {best_score}")
+            logging.info("Saving the best model")
+            save_pkl(obj=best_model_trained,obj_path=self.config.model_file_path)
+            logging.info("Model Pickle file is saved")
         except Exception as e:
-            logging.error("Error occurres in model trainer due to {e}")
-            raise CustomException(e,sys)
-        
-    def hybrid_lemmatize_stem(self,text):
-        """
-        Applies lemmatization followed by stemming on unique words from the text.
-
-        Args:
-            text (str): Input text.
-
-        Returns:
-            dict: A dictionary where keys are the original unique words,
-                and values are their lemmatized and stemmed forms.
-        """
-        # Tokenize and get unique words
-        words = set(nltk.word_tokenize(text))
-
-        # Initialize lemmatizer and stemmer
-        lemmatizer = WordNetLemmatizer()
-        stemmer = PorterStemmer()
-
-        # Apply lemmatization followed by stemming
-        processed_words = [
-            stemmer.stem(lemmatizer.lemmatize(word)) for word in words
-        ]
-
-        return " ".join(processed_words)    
-        
-    def get_vectorized_data(self,data):
-        cv = CountVectorizer(max_features=5000,stop_words='english')
-        vectors = cv.fit_transform(data).toarray()  
-        
-        return vectors
-        
+            logging.error("Error occured during model training: {}".format(e))
+            raise CustomException(e,sys)  

@@ -6,4 +6,6 @@ imblearn
 ipykernel
 nltk
 wordcloud
+pymongo
+requests
 # -e .
