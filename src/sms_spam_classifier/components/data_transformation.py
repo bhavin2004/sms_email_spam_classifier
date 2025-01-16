@@ -54,7 +54,7 @@ class DataTransformation():
             
             train_target = train_df['target']
             test_target = test_df['target']
-            print(train_df.shape, test_df.shape, train_target.shape, test_target.shape)
+            
             #Transforming the data
             train_df['transformed_txt'] = train_df['sms'].apply(transform_text)
             test_df['transformed_txt'] = test_df['sms'].apply(transform_text)
@@ -63,8 +63,6 @@ class DataTransformation():
             tf_vectorizer = TfidfVectorizer(max_features=3000)
             x_train = tf_vectorizer.fit_transform(train_df['transformed_txt']).toarray()
             x_test = tf_vectorizer.transform(test_df['transformed_txt']).toarray()
-            print("shdai")
-            print(x_train.shape, x_test.shape, train_target.shape, test_target.shape)
             logging.info('Created vectors of the sms')
             
             save_pkl(obj=tf_vectorizer,obj_path=self.config.TfidfVectorizer_data_path)
