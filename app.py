@@ -22,7 +22,4 @@ if st.button("Predict Spam/Ham"):
     prediction=predict_obj.run_pipeline(sms=sms)
     st.header("The sms you provided is "+ prediction)
     
-    
-if st.button("Tain Model"):
-    obj = Training_Pipeline()
-    obj.run_pipeline()
+
