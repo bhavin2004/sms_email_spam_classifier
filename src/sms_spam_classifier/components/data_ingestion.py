@@ -5,6 +5,8 @@ from dataclasses import dataclass
 from sklearn.model_selection import train_test_split
 import os
 import sys
+from src.sms_spam_classifier.utlis import get_data_from_database_into_dataframe
+from src.sms_spam_classifier.constant import *
 
 
 @dataclass
@@ -24,8 +26,10 @@ class DataIngestion:
 
             os.makedirs(os.path.dirname(self.config.raw_data_path), exist_ok=True)
 
-            df = pd.read_csv("notebooks/data/spam.csv", encoding="Windows-1252")
+            # df = pd.read_csv("notebooks/data/spam.csv", encoding="Windows-1252")
             
+            #getting data from database
+            df = get_data_from_database_into_dataframe(URI,DB_NAME,COLLECTION)
             logging.info("Spilting the dataset into train and test")
 
             train_data, test_data = train_test_split(df, test_size=0.2, random_state=23)
@@ -36,9 +40,13 @@ class DataIngestion:
 
             logging.info("Successfully stored the data")
             logging.info("Data Ingestion is Completed")
-
+            # print(df.shape)
             return (self.config.train_data_path, self.config.test_data_path)
 
         except Exception as e:
             logging.error(f"Error occurred in data ingestion due to {e}")
             raise CustomException(e, sys)
+
+if __name__ == "__main__":
+    obj = DataIngestion()
+    print(obj.initiate_data_ingestion())

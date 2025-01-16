@@ -21,3 +21,6 @@ if st.button("Predict Spam/Ham"):
     predict_obj = PredictionPipeline()
     prediction=predict_obj.run_pipeline(sms=sms)
     st.header("The sms you provided is "+ prediction)
+    
+    
+

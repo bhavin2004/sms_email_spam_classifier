@@ -11,10 +11,26 @@ from sklearn.metrics import accuracy_score, precision_score
 from time import time
 from tqdm import tqdm
 from sklearn.model_selection import GridSearchCV
+import pandas as pd
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
 
 nltk.download('punkt')
 nltk.download('stopwords')
 nltk.download('punkt_tab')
+
+
+def get_data_from_database_into_dataframe(URI,DB_NAME,COLLECTION_NAME)->pd.DataFrame():
+    try:
+        # Create a new client and connect to the server
+        client = MongoClient(URI, server_api=ServerApi('1'))
+        connection = client[DB_NAME][COLLECTION_NAME]
+        data = connection.find()
+        df= pd.DataFrame(data)
+        df.drop(columns='_id',axis=1,inplace=True)
+        return df
+    except Exception as e:
+        raise CustomException(e,sys)
 
 
 def save_pkl(obj, obj_path):
