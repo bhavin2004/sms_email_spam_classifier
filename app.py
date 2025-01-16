@@ -6,9 +6,6 @@ import nltk
 import os    
 
 
-if not os.path.exists('artifacts/model.pkl:
-    train_model_obj = Training_Pipeline()
-    train_model_obj.run_pipeline() 
 
 st.title("SMS Spam Classifier System")
 
