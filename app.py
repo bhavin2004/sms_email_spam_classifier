@@ -8,32 +8,14 @@ import nltk
 
 st.title("SMS Spam Classifier System")
 
-st.markdown(
-    """
-    <style>
-    .css-1lcbz6z {
-        font-size: 24px;  # Change the font size as needed
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
 
-sms = st.text_area("Enter the sms here:-",)
+sms = st.text_area("Enter the sms here:-")
 
 
-# if st.button("Recommand the Movies"):
-#     predict_obj = PredictionPipeline()
-#     recommended_movies=predict_obj.run_pipeline(movie=movie)
-#     # for movie_id,movie_name in recommended_movies.items():
-#     movie_id=list(recommended_movies.keys())
-#     movie_name = list(recommended_movies.values())
-#     for index,col in enumerate(st.columns(5,gap='medium')):
-#         with col:
-#             st.image(fetch_poster(movie_id=movie_id[index]))
-#             st.write(movie_name[index])
-#     # st.write(recommended_movies)
-#     # st.write(type(recommended_movies))
-#     # for i in recommended_movies:
-#     #     st.write(i)
+
+
+if st.button("Predict Spam/Ham"):
+    predict_obj = PredictionPipeline()
+    prediction=predict_obj.run_pipeline(sms=sms)
+    st.header("The sms you provided is "+ prediction)
