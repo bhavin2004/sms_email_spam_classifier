@@ -6,6 +6,10 @@ import nltk
 import os    
 
 
+if not os.path.exists('artifacts/model.pkl'):
+    train_model_obj = Training_Pipeline()
+    train_model_obj.run_pipeline() 
+
 st.title("SMS Spam Classifier System")
 
 
@@ -13,10 +17,6 @@ st.title("SMS Spam Classifier System")
 sms = st.text_area("Enter the sms here:-")
 
 
-
-if not os.path.exists('artifacts/model.pkl'):
-    train_model_obj = Training_Pipeline()
-    train_model_obj.run_pipeline() 
 
 if st.button("Predict Spam/Ham"):
 
