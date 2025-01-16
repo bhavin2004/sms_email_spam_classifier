@@ -6,7 +6,7 @@ import nltk
 import os    
 
 
-if not os.path.exists('artifacts/model.pkl'):
+if not os.path.exists('artifacts/model.pkl') or st.button("Train model"):
     train_model_obj = Training_Pipeline()
     train_model_obj.run_pipeline() 
 
