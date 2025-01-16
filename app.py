@@ -15,7 +15,7 @@ sms = st.text_area("Enter the sms here:-")
 
 
 
-if st.button("Predict Spam/Ham"):
+if st.button("Predict Spam/Ham") or sms!=None:
 
     
     predict_obj = PredictionPipeline()
