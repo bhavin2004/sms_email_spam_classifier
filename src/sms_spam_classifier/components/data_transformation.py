@@ -41,7 +41,7 @@ class DataTransformation():
             # Renaming the cols
             train_df.rename(columns={'v1':'target','v2':'sms'},inplace=True)
             test_df.rename(columns={'v1':'target','v2':'sms'},inplace=True)
-            print(train_df.shape, test_df.shape)
+      
 
             #encoding the target col where ham=0 and spam=1
             encoder = LabelEncoder()

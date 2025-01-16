@@ -14,8 +14,8 @@ logging.basicConfig(
     level=logging.INFO,
     format="[%(asctime)s]: %(levelname)s: %(name)s %(module)s at line no %(lineno)d=> %(message)s",
     handlers=[
-        logging.FileHandler(filename=LOG_FILE_PATH)
-        # logging.StreamHandler(sys.stdout)
+        logging.FileHandler(filename=LOG_FILE_PATH),
+        logging.StreamHandler(sys.stdout)
     ]
 )
 
