@@ -14,6 +14,9 @@ sms = st.text_area("Enter the sms here:-")
 
 
 
+if not os.path.exists('artifacts/model.pkl'):
+    train_model_obj = Training_Pipeline()
+    Training_Pipeline.run_pipeline() 
 
 if st.button("Predict Spam/Ham"):
 
@@ -21,7 +24,3 @@ if st.button("Predict Spam/Ham"):
     predict_obj = PredictionPipeline()
     prediction=predict_obj.run_pipeline(sms=sms)
     st.header("The sms you provided is "+ prediction)
-
-if not os.path.exists('artifacts/model.pkl'):
-    train_model_obj = Training_Pipeline()
-    Training_Pipeline.run_pipeline() 
