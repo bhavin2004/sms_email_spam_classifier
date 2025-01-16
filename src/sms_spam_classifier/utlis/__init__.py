@@ -14,6 +14,7 @@ from sklearn.model_selection import GridSearchCV
 
 nltk.download('punkt')
 nltk.download('stopwords')
+nltk.download('punkt_tab')
 
 
 def save_pkl(obj, obj_path):
