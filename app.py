@@ -185,7 +185,7 @@ elif selection == "About Project":
     
     ---
     #### 👨‍💻 Developed by:
-    - **Pa Win (Bhavin Karangia)** 🎓
+    - **Bhavin Karangia** 🎓
     - Aspiring Data Scientist with expertise in ML, AI, and Web Scraping.
     
     ---
