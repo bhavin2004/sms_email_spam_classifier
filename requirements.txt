@@ -8,4 +8,6 @@ nltk
 wordcloud
 pymongo
 requests
+streamlit
+streamlit-option-menu
 # -e .

@@ -26,9 +26,7 @@ class PredictionPipeline():
             vectorizer = load_pkl(self.config.vectorizer_pkl_path)
             logging.info("Successfully Loaded neccessary files")
             sms = [transform_text(sms)]
-            print(sms)
             sms_vector = vectorizer.transform(sms).toarray()
-            print(sms_vector)
             prediction = model.predict(sms_vector)
             return 'Spam' if prediction == 1 else "Ham"
         except Exception as e:
